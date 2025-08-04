@@ -86,6 +86,7 @@ async def make_move(move: Move) -> State:
         try:
             await socket.send_json(CURRENT_STATE)
         except Exception as e:
+            print(e)
             LISTENERS.remove(socket)
     return CURRENT_STATE
 
