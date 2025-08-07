@@ -12,11 +12,11 @@ export function Droppable(props: any) {
   };
   
 
-  const test = over ? over.id : "not";
+  // const test = over ? over.id : props.children;
   
   return (
     <div ref={setNodeRef} style={style}>
-      {test}
+      {props.children}
     </div>
   );
 }
