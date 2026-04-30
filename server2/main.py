@@ -1,4 +1,8 @@
 from engine import *
 from models import *
 
-print(create_game(["bob"]))
+gme = create_game(["bob", "alice"])
+
+
+for p in gme.players:
+    print(p)
