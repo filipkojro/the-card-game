@@ -41,9 +41,3 @@ class GameState(BaseModel):
 
                     state_str = state_str + value_str + f"{card.color.value}"
         return state_str
-    
-    def check_card_on_top(self, card: Card) -> bool:
-        for stack in self.desk:
-            if card == stack.cards[-1]:
-                return True
-        return False
