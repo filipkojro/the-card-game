@@ -1,6 +1,8 @@
-from pydantic import BaseModel
-from enum import Enum
 import uuid
+from enum import Enum
+
+from pydantic import BaseModel
+
 
 class CardColor(Enum):
     KIER = 0
@@ -8,23 +10,25 @@ class CardColor(Enum):
     TREFL = 2
     PIK = 3
 
+
 class Card(BaseModel):
-    id: uuid.UUID
     value: int
     color: CardColor
     win_condition: bool
 
+
 class CardGroup(BaseModel):
-    id: uuid.UUID
     cards: list[Card]
 
+
 class Player(BaseModel):
-    id: uuid.UUID
+    player_id: uuid.UUID
     username: str
     hand: CardGroup
 
+
 class GameState(BaseModel):
-    id: uuid.UUID
+    game_id: uuid.UUID
     players: list[Player]
     desk: list[CardGroup]
 

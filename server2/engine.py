@@ -6,8 +6,8 @@ from models import Card, CardColor, CardGroup, GameState, Player
 def gen_classic_card_color(color: CardColor) -> CardGroup:
     cards = []
     for i in range(2, 15):
-        cards.append(Card(id=uuid.uuid4(), value=i, color=color, win_condition=i > 10))
-    return CardGroup(id=uuid.uuid4(), cards=cards)
+        cards.append(Card(value=i, color=color, win_condition=i > 10))
+    return CardGroup(cards=cards)
 
 
 def create_game(player_names: list[str]) -> GameState:
@@ -20,13 +20,13 @@ def create_game(player_names: list[str]) -> GameState:
     for i, name in enumerate(player_names):
         players.append(
             Player(
-                id=uuid.uuid4(),
+                player_id=uuid.uuid4(),
                 username=name,
                 hand=gen_classic_card_color(color=colors[i]),
             )
         )
 
-    return GameState(id=uuid.uuid4(), players=players, desk=[])
+    return GameState(game_id=uuid.uuid4(), players=players, desk=[])
 
 
 def notation_to_card(game_state: GameState, card: str) -> Card | None:
