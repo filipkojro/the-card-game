@@ -1,13 +1,25 @@
 import uuid
 
-from engine import *
-from models import *
+from fastapi import FastAPI
+
+from engine import create_game
+from models import Card, CardColor, CardGroup
 
 gme = create_game(["bob", "alice"])
 
-gme.desk.append(CardGroup(id=uuid.uuid4(), cards=[Card(id=uuid.uuid4(), value=4, color=CardColor.KARO, win_condition=False)]))
+gme.desk.append(
+    CardGroup(
+        id=uuid.uuid4(),
+        cards=[
+            Card(id=uuid.uuid4(), value=4, color=CardColor.KARO, win_condition=False)
+        ],
+    )
+)
 
-print(gme.state_str())
+
+app = FastAPI()
 
 
-print(group_value(gme, notation_to_card(gme, "041")))
+@app.get("/")
+async def root():
+    return gme
