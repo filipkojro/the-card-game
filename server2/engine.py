@@ -50,6 +50,13 @@ def check_card_on_top(game_state: GameState, card: Card) -> bool:
     return False
 
 
+def check_card_on_bottom(game_state: GameState, card: Card) -> bool:
+    for stack in game_state.desk:
+        if card == stack.cards[0]:
+            return True
+    return False
+
+
 def check_group_on_top(game_state: GameState, bottom_card: Card) -> bool:
     for stack in game_state.desk:
         last_card = stack.cards[-1]
@@ -78,7 +85,7 @@ def group_value(game_state: GameState, bottom_card: Card) -> int:
     return 0
 
 
-def group_bottom_card(game_state: GameState, any_card: Card) -> Card | None:
+def check_group_bottom_card(game_state: GameState, any_card: Card) -> Card | None:
     for stack in game_state.desk:
         found_group = False
         last_card = stack.cards[-1]
@@ -93,12 +100,37 @@ def group_bottom_card(game_state: GameState, any_card: Card) -> Card | None:
     return None
 
 
+def cards_stack_number(game_state: GameState, card: Card) -> int | None:
+    for i, stack in enumerate(game_state.desk):
+        if card in stack.cards:
+            return i
+    return None
+
+
+def check_card_in_edge_stack(game_state: GameState, card: Card) -> bool:
+    if card in game_state.desk[0].cards:
+        return True
+    if card in game_state.desk[-1].cards:
+        return True
+    return False
+
+
 def make_move(game_state: GameState, src: str, dest: str) -> bool:
     src_card = notation_to_card(game_state, src)
     dest_card = notation_to_card(game_state, dest)
 
-    if src_card is not None and not check_group_on_top(game_state, src_card):
+    if src_card is None or dest_card is None:
         return False
-    if dest_card is not None and not check_card_on_top(game_state, dest_card):
+
+    if not check_group_on_top(game_state, src_card):
         return False
+
+    if not check_card_on_top(game_state, dest_card):
+        return False
+
+    if check_card_on_bottom(game_state, src_card) and not check_card_in_edge_stack(
+        game_state, src_card
+    ):
+        return False  # TODO: need to cut number of stacks if card is on edge
+
     return True

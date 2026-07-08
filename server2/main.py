@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from engine import create_game
+from engine import cards_stack_number, create_game, notation_to_card
 from models import Card, CardColor, CardGroup
 
 gme = create_game(["bob", "alice"])
@@ -17,4 +17,8 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return gme
+    card = notation_to_card(gme, "041")
+    if card is not None:
+        return cards_stack_number(gme, card)
+    else:
+        return "nieeeee"
